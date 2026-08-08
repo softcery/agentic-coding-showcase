@@ -6,6 +6,9 @@ Built for Claude Code.
 ```
 - README.md
 - CLAUDE.md
+- Makefile
+- scripts
+    - comment-budget.py
 - .claude
     - settings.json
     - commands/
@@ -13,6 +16,7 @@ Built for Claude Code.
         - execute.md
         - audit.md
         - ref.md
+        - deslop.md
 - docs
     - README.md
     - notes/
@@ -40,14 +44,22 @@ Built for Claude Code.
 3. `/review` the task, document the audit into the same task file.
    1. Then either fix in the same session if issues are minor, or repeat the flow (design -> execute) if issues justify this.
 
+## Lint
+- `make lint` = `scripts/comment-budget.py`. Comment budget + slop scan. Covers py/ts/tsx/js/jsx/rs + md.
+- Budgets: file warn 15% / fail 20% comment chars. Blocks warn >2 / fail >4 lines. Tree warn 13% / fail 15%.
+- `--strict`: warnings fail.
+- Pre-commit hook runs same target. Clean `make lint` = commit lands.
+- `/deslop`: rewrite docs to compressed style. Facts, numbers, sources, code untouched.
+
 ## Instructions
 1. Populate or rewrite CLAUDE.md depending on the project.
    1. I suggest using Claude Code with `--system-prompt "-"` to disable the default Claude Code prompt. Works better IMO.
-2. Document or design the business/product specification into `./docs/spec`.
+2. Extend `make lint` with project/language linters (ruff, eslint, clippy). One target: hook and agents call it.
+3. Document or design the business/product specification into `./docs/spec`.
    1. You could try using `/audit` or `/ref` for this purpose with existing products.
-3. Document or design the system architecture and important technical aspects into `./docs/refs`.
+4. Document or design the system architecture and important technical aspects into `./docs/refs`.
    1. Use the helpful `/ref` command for documenting existing systems.
-4. Use the design and development flow described above.
+5. Use the design and development flow described above.
 
 ## Tips
 1. Once Claude completes the `/audit`, ask it whether it reviewed everything, and if not, ask it to complete the audit, without compromises. Otherwise Claude is often lazy...
