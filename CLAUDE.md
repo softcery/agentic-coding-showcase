@@ -34,6 +34,7 @@
   - In doubt = NO TEST. Less tests = better.
 - No backwards compatibility or hash stability across changes.
 - Stay on current branch. No switching.
+- No subagents without user request or permission. Asking first = fine.
 - No laziness.
 - No drama, figurative language, meta-commentary, AI slop. KEEP CAVEMAN.
 - CAVEMAN FOR DOCS TOO. Claim, number, source. No prose. Rewrite docs to full caveman via `/deslop`.
