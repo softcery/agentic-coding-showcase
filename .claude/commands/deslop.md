@@ -16,7 +16,9 @@ Scope. Files. Confirm before §2.
 
 Every doc, end-to-end.
 
-Kill: dramatics, editorials, poetics, metaphor, narrative, verdict-voice, hedging, filler, throat-clearing, "which is why", "that is the whole reason", clever phrasing. Drop articles. Fragments OK.
+Kill: dramatics, editorials, poetics, metaphor, narrative, verdict-voice, meta-commentary, hedging, filler, throat-clearing, "which is why", "that is the whole reason", clever phrasing. Drop articles. Fragments OK.
+
+Kill AI tells: "not X, it's Y" contrasts, adverbs, false agency ("the code wants"), lazy extremes (every/always/never without number), vague declaratives, punchy closers, pull-quotes.
 
 Keep exact: facts, numbers, units, sources, code blocks, commands, paths.
 
