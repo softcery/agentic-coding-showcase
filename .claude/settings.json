@@ -61,7 +61,22 @@
       "Bash(git branch --list)",
       "Bash(git branch --list *)",
       "Bash(git add *)"
+    ],
+    "deny": [
+      "ScheduleWakeup",
+      "ReportFindings",
+      "DesignSync",
+      "EnterWorktree",
+      "ExitWorktree",
+      "SendFeedback",
+      "CronCreate",
+      "CronDelete",
+      "CronList",
+      "NotebookEdit"
     ]
   },
-  "outputStyle": "Caveman"
+  "outputStyle": "Caveman",
+  "enableArtifact": false,
+  "disableClaudeAiConnectors": true,
+  "disableWorkflows": true
 }
