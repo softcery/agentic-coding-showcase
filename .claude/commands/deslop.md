@@ -20,7 +20,9 @@ Kill: dramatics, editorials, poetics, metaphor, narrative, verdict-voice, meta-c
 
 Kill AI tells: "not X, it's Y" contrasts, adverbs, false agency ("the code wants"), lazy extremes (every/always/never without number), vague declaratives, punchy closers, pull-quotes.
 
-Keep exact: facts, numbers, units, sources, code blocks, commands, paths.
+Keep exact: facts, numbers, units, sources, code blocks, commands, paths. Source gives no number, cause, or exact term = keep general statement. Invent no specifics to look concrete.
+
+Apply grammar rules from CLAUDE.md style block: simple tenses, modals can/will/must, condition before command, one term per concept.
 
 Before: "The half second is real and it is silent, which is the part a listener judges. So the agent speaks a held line the moment the call goes out, and the search runs under it."
 After: "0.5s silence during search. Held line fires at tool call, search runs under it."

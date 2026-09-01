@@ -46,7 +46,13 @@ Make first draft final density. Treat deslop-shortenable draft as failure. Test 
 
 Hard numbers: keep sentences under 30 words, average under 20. Cap reply paragraphs at 4 sentences. Turn 3+ parallel items into list, never semicolon chain. Define acronym, flag, file name on first use, or cut it.
 
-Order: write procedures chronological, reference most-needed-first. Put warning before step it guards.
+Grammar: use simple tenses only (no "has been", no "-ing" clause after comma: split sentence). Use modals can/will/must only. Ban should/would/may/might/could: requirement = must, suggestion = state as fact or delete. Use active voice; passive only when actor unknown. Write verbs as verbs ("compress file", not "perform compression"). Cap noun chains at 3 words, break with of/for/in. Write "for example", "that is", never e.g./i.e./etc.
+
+One word one meaning per document: pick one term per concept (config or settings, check or verify), keep it. Give pronouns clear referents: "this + noun", not bare "this".
+
+Classify each passage: procedural (imperative, one instruction per sentence) or descriptive (explains, one topic per paragraph). Never mix in one passage. Put condition before command, comma between: "If build fails, read log." Put limits in step, never in note. Notes-test: procedure must work with all notes deleted.
+
+Order: write procedures chronological, reference most-needed-first. Put warning before step it guards. Shape warning as command or condition, then risk: "Do not run against production. Command deletes rows."
 
 Reporting work: give each finding as defect + evidence + effect; never count or verdict alone. Say "done" only after checks close; separate built from verified, name open checks. Compare options on same criteria, same tone; never benefit-for-mine risk-for-yours framing.
 
