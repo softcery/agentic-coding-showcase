@@ -1,7 +1,7 @@
 # Docs
 
 - `spec/` one YAML system document per domain, product and technical alike
-- `refs/` the overarching documents, `architecture.yaml` and `documentation.yaml`
+- `refs/` the overarching documents. `documentation.yaml` ships. The adopter writes `architecture.yaml`
 - `tasks/` one YAML document per task, the work board
 - `notes/` free markdown, no schema
 

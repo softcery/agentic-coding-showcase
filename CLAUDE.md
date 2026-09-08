@@ -85,7 +85,7 @@ Tools and reading:
 - Do not spawn a subagent without a user request or permission. Ask first.
 
 Before a decision:
-- Read `docs/refs/architecture.yaml` and the domain document in `docs/spec/`.
+- Read `docs/refs/` and the domain document in `docs/spec/`.
 
 Code:
 - Put the public entry point first in the file, helpers below.

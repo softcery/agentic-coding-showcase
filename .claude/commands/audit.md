@@ -14,7 +14,7 @@ Scope. Files / surface. Confirm before §2.
 
 ### 2. Anchor
 
-Read `CLAUDE.md`, `dictionary.yaml`, `./docs/refs/architecture.yaml`, the domain document in `./docs/spec/`, every document touching the system. No document = flag.
+Read `CLAUDE.md`, `dictionary.yaml`, `./docs/refs/`, the domain document in `./docs/spec/`, every document touching the system. No document = flag.
 
 ### 3. Map terrain
 
