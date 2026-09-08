@@ -1,0 +1,38 @@
+sources:
+  iso29148: ISO/IEC/IEEE 29148:2018 Requirements engineering
+  iso42010: ISO/IEC/IEEE 42010:2022 Architecture description
+  sevocab: ISO/IEC/IEEE 24765:2017 Systems and software engineering. Vocabulary
+  project: No published source. Approved by the project.
+
+terms:
+  # document. the project adds its own domain terms below this block
+  purpose:
+    def: statement of the need the system satisfies
+    src: iso29148
+  scope:
+    def: boundary of the system of interest, its inputs and outputs
+    src: iso42010
+  design:
+    def: description of the parts of a system, their function and method
+    src: iso42010
+  rule:
+    def: constraint on the code, verified by review, test or lint
+    src: iso29148 design constraint
+  acceptance:
+    def: condition the delivered work meets before the operator accepts it
+    src: iso29148 acceptance criteria
+  limit:
+    def: case the system does not handle, or handles with known error
+    src: sevocab limitation
+  issue:
+    def: measured defect with evidence
+    src: sevocab problem report
+  task:
+    def: unit of work with one outcome and one owner
+    src: sevocab
+  evidence:
+    def: path to the material that supports a number
+    src: project
+  operator:
+    def: person who directs the work and approves each term
+    src: project

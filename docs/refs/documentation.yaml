@@ -1,0 +1,90 @@
+domain: documentation
+purpose: Give every reader one true, current, checkable statement per fact about the project.
+scope: The documentation system reads the code, the test output and published sources. It writes system documents, task documents and the dictionary.
+
+design:
+  - part: System document
+    does: One YAML file per domain. Eight keys in order, domain, purpose, scope, design, rules, limits, issues, references. _example-api.yaml is the reference.
+    cite: [iso42010, iso29148]
+  - part: Folders
+    does: docs/spec holds one document per domain, product and technical alike. docs/refs holds the overarching documents, architecture and documentation. docs/notes holds free markdown.
+  - part: Domain name
+    does: One domain name is declared once across both folders. The domain matches the file stem. A task id starts with the domain of the document it cites.
+  - part: Purpose and scope
+    does: Purpose is one sentence and states the outcome the system exists to produce. Scope is two sentences and states what the system reads and writes.
+    cite: [iso29148]
+  - part: Design
+    does: A list of parts in data flow order. Each part has part, does and optional cite. The does field states what the part calculates and names its method.
+    cite: [iso42010]
+  - part: Rules
+    does: Each rule has an id and a text. The id is unique in the file. Another document cites a rule as domain and id, for example returns R1.
+  - part: Limits and issues
+    does: Limits are cases the target system does not handle. Issues are gaps between design and code, measured with an evidence path, or unmeasured when a part is not built.
+    cite: [iso29148]
+  - part: Task document
+    does: One YAML file per task under docs/tasks. Eleven keys in order, id, title, after, purpose, scope, design, acceptance, steps, limits, results, references.
+    cite: [iso29148, iso15289]
+  - part: References
+    does: A map from citation key to one line, authors, year, title, venue, DOI. Each cite key resolves in references. Each reference is cited.
+  - part: Dictionary
+    does: dictionary.yaml at the repository root defines one term per concept with def and src. The terms apply to code, configuration, docs and chat.
+  - part: Language
+    does: ASD-STE100 and ISO 24495-1 apply to every text field and all prose. Procedural sentences stay under 20 words, descriptive under 25.
+    cite: [ste100, iso24495]
+  - part: Checks
+    does: make lint runs scripts/doc-lint.py. The script checks the schema, the key order, the sentence length, the banned words and the citation keys.
+
+rules:
+  - id: R1
+    text: Write system documents in YAML 1.2. Do not write them in markdown.
+  - id: R2
+    text: Do not name code symbols in a system document. Name concepts.
+  - id: R3
+    text: Give each rule an id that is unique in the file.
+  - id: R4
+    text: Do not write a measurement that no issue or limit uses.
+  - id: R5
+    text: Do not write history, closed issues, old values, before-after text or dates.
+  - id: R6
+    text: Write the target design. Record an unbuilt part as an issue without evidence.
+  - id: R7
+    text: Give an issue with a number an evidence path.
+  - id: R8
+    text: Check that the evidence exists before you cite it.
+  - id: R9
+    text: Give each reference authors, year, title and venue.
+  - id: R10
+    text: Write each acceptance entry as a checkable statement with a number or a named check.
+  - id: R11
+    text: A task cite resolves in the task references or in the domain document.
+  - id: R12
+    text: During a task, edit one document, the task file.
+  - id: R13
+    text: Do not edit the dictionary in a task. Propose a term and its source to the operator.
+  - id: R14
+    text: Mark a term with no published source as src project. The operator approves each one.
+  - id: R15
+    text: Give each sentence a verb. Use the active voice and the present tense.
+  - id: R16
+    text: Write a prohibition as do not plus verb.
+  - id: R17
+    text: Name the actor. Do not write that the code wants.
+  - id: R18
+    text: Do not write metaphor. Use the dictionary term.
+
+limits:
+  - The ASD-STE100 approved word list is not in the repository. Vocabulary checks run by eye until it is.
+  - The lint counts sentence words. It does not check grammar, voice or tense.
+  - The dictionary check confirms the source key. It does not confirm the definition against the source text.
+  - The lint checks the evidence path shape. It does not open the path.
+  - docs/notes holds free markdown. No schema check runs on it.
+  - A scaffold file, prefix _, holds illustrative content. The adopter deletes it.
+
+issues: []
+
+references:
+  iso42010: ISO/IEC/IEEE 42010:2022. Software, systems and enterprise. Architecture description
+  iso29148: ISO/IEC/IEEE 29148:2018. Systems and software engineering. Life cycle processes. Requirements engineering
+  iso15289: ISO/IEC/IEEE 15289:2019. Systems and software engineering. Content of life-cycle information items
+  iso24495: ISO 24495-1:2023. Plain language. Part 1, Governing principles and guidelines
+  ste100: ASD-STE100. Simplified Technical English. Issue 8, 2021

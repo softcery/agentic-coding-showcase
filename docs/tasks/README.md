@@ -1,25 +1,27 @@
-# Tasks — work board
+# Tasks
 
-Every unit of work in flight, one file each. A unit is usually a **plan**
-(staged, architectural — the default size here) but a small standalone task is
-fine too when it doesn't earn a plan. Size lives in the content, not the folder.
+One YAML file per task. `_example.yaml` gives 11 keys and their order.
 
-Its **folder is its status** — move the file, not a field.
+Folder = state. Move the file, add no field.
 
 ```
-backlog/   some day, later
-todo/      queued, not fully planned
-next/      ready for implementation
-review/    shipped, needs review
-done/      shipped, kept as record
+backlog/   not scheduled
+next/      ready to build
+progress/  in build
+done/      built and reviewed
 ```
 
-## Workflow
+File name: `<domain>-<number>-<name>.yaml`. Domain matches one document in
+`spec/`. Task cite resolves in task references or in that document. Number
+orders tasks inside one domain.
 
-1. New work → copy `_template.md` into `backlog/` as `0-slug.md`. Todo stays
-   **unnumbered** (`0-` prefix) — order isn't committed yet. A plan-sized item
-   carries its full staging in that file; a small task stays short.
-2. Ready it → `git mv` `todo/ → next/`, rename `0-slug` → next free `NNN-slug`.
-   Numbers run one sequence across `next/` + `done/`, zero-padded to 3 digits.
-3. Ship it → `git mv` `next/ → review/`, keep the number.
-4. Reviewed and approved it → `git mv` `review/ → done/`.
+## Procedure
+
+1. Copy `_example.yaml` into `backlog/` as `<domain>-00-<name>.yaml`.
+2. Fill purpose, scope, design, acceptance, steps, limits.
+3. List ids this task waits on in `after`.
+4. To schedule, `git mv` into `next/` and set the number.
+5. To start, `git mv` into `progress/`.
+6. During build, edit this file only.
+7. Write each outcome into `results`. Give each number an evidence path.
+8. After review, `git mv` into `done/`.

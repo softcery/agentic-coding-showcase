@@ -1,5 +1,5 @@
 ---
-description: Rewrite docs to FULL CAVEMAN. Style only. Facts, numbers, sources untouched.
+description: Remove slop from docs. Style only. Facts, numbers, sources untouched.
 ---
 
 Deslop: $ARGUMENTS. Default scope: all docs in project at hand. Style only. No fact changes, no content deletion, no judgements, no verification.
@@ -31,9 +31,11 @@ Same fact count. Target: half chars. Reads well = rewrite it. Unsure fact or flo
 
 Never cheat the scanner: synonym-swap = same slop, new fingerprint.
 
-Slop lives in structure, not sentences. Caveman sentences in story order = still story. Extract facts, state them. Restructure when shape is the slop.
+Slop lives in structure, not sentences. Short sentences in story order = still story. Extract facts, state them. Restructure when shape is the slop.
 
 BE RUTHLESS! Kill all bullshit, all romantics, all poetics, all the fucking riddle-speak. Limit language to <= B2 level.
+
+A YAML document keeps its schema. Rewrite the text of a field, never its key or order.
 
 ### 3. Verdict
 
@@ -42,5 +44,3 @@ Chars before/after per file. No commentary.
 ---
 
 Not `/audit`. No findings, no opinions on content. Text only.
-
-FULL CAVEMAN MODE ACTIVE.
