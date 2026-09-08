@@ -5,10 +5,13 @@ Built for Claude Code.
 ## Structure
 ```
 - README.md
-- CLAUDE.md
+- CLAUDE.md            instructions, style, rules, dictionary index
 - Makefile
+- dictionary.yaml      one term per concept
 - scripts
     - comment-budget.py
+    - doc-lint.py
+    - dictionary-index.py
 - .claude
     - settings.json
     - commands/
@@ -20,48 +23,63 @@ Built for Claude Code.
 - docs
     - README.md
     - notes/
-    - refs/
-        - _example-architecture.md
+        - _example-evidence.md
     - spec/
-        - _example-glossary.md
-        - _example-returns.md
+        - _example-api.yaml
+        - _example-returns.yaml
+    - refs/
+        - documentation.yaml
     - tasks/
-      - README.md
-      - _template.md
-      - backlog/
-      - todo/
-      - next/
-      - review/
-      - done/
-          - _example-amendment-tracker-names-the-actor.md
+        - README.md
+        - _example.yaml
+        - backlog/
+        - next/
+        - progress/
+        - done/
 ```
 
 ## Flow
-1. `/design` a task, save into `./tasks/next`
-   1. Can be broken into one `/design` session for product/business design and another separate `/design` session for architectural and technical planning.
-2. `/execute` the task, move into `./tasks/review`.
-   1. Can be broken down into multiple execution phases as part of the design phase (step 1 above).
-3. `/review` the task, document the audit into the same task file.
-   1. Then either fix in the same session if issues are minor, or repeat the flow (design -> execute) if issues justify this.
+1. `/design` a task with the user. Save it into `docs/tasks/next/`.
+2. `/execute` the task. Move it into `docs/tasks/progress/`.
+3. `/audit` the work. Write the findings into the same task file.
+4. Fix small findings in the same session. For a large finding, open a new task.
+5. Move the task into `docs/tasks/done/`.
+
+Split a large task into phases in one file, or into several files linked by `after`.
+
+## Documents
+- One YAML file per domain. Eight keys: domain, purpose, scope, design, rules, limits, issues, references.
+- `docs/spec/` holds one system document per domain, product and technical alike.
+- `docs/refs/` holds the overarching documents, `architecture.yaml` and `documentation.yaml`.
+- One YAML file per task. Eleven keys, `docs/tasks/_example.yaml` gives the order.
+- `docs/refs/documentation.yaml` states the schema and the 18 rules.
+- Each rule carries an id. Another document cites it as domain and id, for example `example R1`.
+- A number in an issue or a result carries an evidence path.
+
+## Dictionary
+- `dictionary.yaml` defines one term per concept, with a source.
+- The seed holds 10 document terms. Add the project's domain terms.
+- Mark a term with no published source as `src: project`.
+- `scripts/dictionary-index.py` prints the index block for CLAUDE.md.
 
 ## Lint
-- `make lint` = `scripts/comment-budget.py`. Comment budget + slop scan. Covers py/ts/tsx/js/jsx/rs + md.
-- Budgets: file warn 15% / fail 20% comment chars. Blocks warn >2 / fail >4 lines. Tree warn 13% / fail 15%.
-- `--strict`: warnings fail.
-- Pre-commit hook runs same target. Clean `make lint` = commit lands.
-- `/deslop`: rewrite docs to compressed style. Facts, numbers, sources, code untouched.
+- `make lint` runs `scripts/comment-budget.py` and `scripts/doc-lint.py`.
+- Comment budget: file warn 15 %, fail 20 % of characters. Blocks warn over 2 lines, fail over 4. Tree warn 13 %, fail 15 %. Covers py, ts, tsx, js, jsx, rs and md.
+- Document lint: schema, key order, sentence length, banned modals, citation keys, evidence path shape.
+- `--strict` fails on a warning. The repository ships no pre-commit hook. Add one that runs `make lint`.
+- `/deslop` rewrites docs to the style. Facts, numbers, sources and code stay unchanged.
 
-## Instructions
-1. Populate or rewrite CLAUDE.md depending on the project.
-   1. I suggest using Claude Code with `--system-prompt "-"` to disable the default Claude Code prompt. Works better IMO.
-2. Extend `make lint` with project/language linters (ruff, eslint, clippy). One target: hook and agents call it.
-3. Document or design the business/product specification into `./docs/spec`.
-   1. You could try using `/audit` or `/ref` for this purpose with existing products.
-4. Document or design the system architecture and important technical aspects into `./docs/refs`.
-   1. Use the helpful `/ref` command for documenting existing systems.
-5. Use the design and development flow described above.
+## Setup
+1. Write CLAUDE.md for the project. Fill the `<project>` block.
+2. Run Claude Code with `--system-prompt "-"` to drop the default prompt.
+3. Add the project linters to `make lint`, for example ruff, eslint, clippy. One target serves the hook and the agents.
+4. Set `EVIDENCE` in `scripts/doc-lint.py` to the project's evidence path shape.
+5. Write one system document per domain into `docs/spec/`. Use `/ref` on an existing product or on existing code.
+6. Write `docs/refs/architecture.yaml`. It spans the domains and names the seams.
+7. Add the project's terms to `dictionary.yaml`. Run `scripts/dictionary-index.py` and paste the index into CLAUDE.md.
+8. Work through the flow above.
 
-## Tips
-1. Once Claude completes the `/audit`, ask it whether it reviewed everything, and if not, ask it to complete the audit, without compromises. Otherwise Claude is often lazy...
-   1. Using Claude Code without default system instructions makes it less lasy, but it's still lasy.
-2. Bigger tasks can be either split into phases in the same task file, or split into multiple tasks. Logically, bigger tasks need multiple separate `/execute` and `/audit` sessions to make sure everything is good.
+## Notes
+- After `/audit`, ask the model whether it reviewed the whole scope. It stops early.
+- A large task needs several `/execute` and `/audit` sessions.
+- Two agents on one repo need separate branches or separate worktrees.

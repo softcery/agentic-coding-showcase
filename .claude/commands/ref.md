@@ -1,8 +1,8 @@
 ---
-description: Distill a system into a ref under ./docs/refs/. Architecture and rules only. No code dumps, no plan refs, no obvious stuff.
+description: Distill a system into a YAML document under ./docs/refs/ or ./docs/spec/. Design and rules only. No code dumps, no plan refs, no obvious stuff.
 ---
 
-Write a ref for the system: $ARGUMENTS. One tight doc under `./docs/refs/` that locks shape, invariants, rules. A ref is a fence, not a tour. You're the ingenious software architect with IQ of 180.
+Write the document for the system: $ARGUMENTS. One YAML file that locks the design, the rules and the limits. A document is a fence, not a tour. You're the ingenious software architect with IQ of 180.
 
 ---
 
@@ -10,44 +10,47 @@ Write a ref for the system: $ARGUMENTS. One tight doc under `./docs/refs/` that 
 
 ### 1. Restate
 
-Restate system and boundary. In / out. Confirm before §2.
+Restate the system and its boundary. In / out. Confirm before §2.
 
-### 2. Review refs
+### 2. Review documents
 
-Read `./docs/refs/architecture.md` and any overlapping ref. No duplication. No contradiction. Extend existing or carve fresh — state the choice.
+Read `./docs/refs/documentation.yaml`, `dictionary.yaml`, `./docs/spec/_example-api.yaml`, every overlapping document. No duplication. No contradiction. Extend an existing document or carve a fresh one. State the choice.
 
 ### 3. Map terrain
 
-`rmap` the system. Read load-bearing files only. Note: boundary, public surface, event/effect shape, who reads, who writes, who folds.
+Map the system. Read load-bearing files only. Note: boundary, public surface, event and effect shape, who reads, who writes, who folds.
 
-### 4. Distill invariants
+### 4. Distill design
 
-Each rule = property enforced by types or one chokepoint. "By convention" → surface as risk. Rule must answer: _what breaks on violation._
+One part per stage, in data flow order. Each `does` states what the part calculates and names its method. Signature level, not body level. Name concepts, not code symbols.
 
-### 5. Distill pillars
+### 5. Distill rules
 
-Load-bearing shapes. Signatures, key state fields, chokepoints that make the system inevitable. Signature-level, not body-level.
+Each rule = one property held by types or one chokepoint. Give it an id, `R1` upward. "By convention" → move it to `limits`. A rule must answer: what breaks on violation.
 
-### 6. Cut
+### 6. Limits and issues
 
-Kill: obvious-from-code, function-body restatement, plan/doc/date/status refs, empty adjectives, examples that pin no rule. If the line prevents no mistake, cut it.
+`limits` = cases the target system does not handle. `issues` = gaps between this design and the code. A number in an issue carries an `evidence` path. Check the path exists.
 
-### 7. Write
+### 7. Cut
 
-`./docs/refs/<system>.md`. Order: one-line purpose · Invariants (rule + chokepoint) · Pillars (signature + role) · Authoring recipe (N concrete edits, where) · Smells (patterns of violation). No prose paragraphs >3 sentences. Caveman.
+Kill: obvious-from-code, function-body restatement, plan and date and status refs, empty adjectives, examples that pin no rule. If the line prevents no mistake, cut it.
 
-### 8. Cross-link
+### 8. Write
 
-Tighten a row in `./docs/refs/architecture.md` with a one-line link. Never copy across refs.
+`./docs/spec/<domain>.yaml` for one system, product or technical. `./docs/refs/<name>.yaml` for an overarching document that spans domains. Eight keys in order. `domain` matches the file stem. Every text field follows the CLAUDE.md style block and `dictionary.yaml`.
 
-### 9. Receipt
+### 9. Check
 
-Ref path + line count. Invariants / pillars / smells captured. Violations found in code → list as follow-up, do not fix here.
+Run `make lint`. Fix every finding. Never widen a sentence past the word limit.
+
+### 10. Receipt
+
+Document path. Parts, rules, limits, issues counted. Terms the dictionary lacks, proposed to the operator. Violations found in code, listed as follow-up tasks, not fixed here.
 
 ---
 
 Fence not tour.
 If it prevents no mistake, cut.
 No plan refs, no dates, no statuses.
-
-FULL CAVEMAN MODE ACTIVE.
+Unmeasured claim never lands in a document.

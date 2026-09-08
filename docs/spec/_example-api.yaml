@@ -1,0 +1,43 @@
+# Technical domain. One file per domain. Eight keys, in this order.
+# Text fields follow ASD-STE100 and use terms from dictionary.yaml.
+
+# Domain name. Matches the file stem. A scaffold file, prefix _, is exempt.
+# One domain name is declared once across docs/spec and docs/refs.
+domain: api
+
+# One sentence. The outcome the system exists to produce.
+purpose: Serve one versioned API that every client calls, with no privileged path.
+
+# Two sentences. What the system reads. What the system writes.
+scope: The api system reads the request, the event ledger and the tenant configuration. It writes events, responses and webhooks.
+
+# One entry per part, in data flow order. Each part states what it calculates
+# and names its method. cite is optional and lists keys from references.
+design:
+  - part: Request gate
+    does: The gate checks the token, the permission and the idempotency key. A repeated key returns the first response.
+    cite: [rfc9110]
+  - part: Event ledger
+    does: A write appends one event. A read folds the events of one tenant to the current figure.
+
+# Constraints on the code. Each rule has an id, unique in the file, and a text.
+# Another document cites a rule as domain and id, for example api R1.
+rules:
+  - id: R1
+    text: The first-party client calls the contract a third-party client calls.
+  - id: R2
+    text: A write appends an event. Do not update a row in place.
+
+# Cases the system does not handle, or handles with known error.
+limits:
+  - The fold reads every event of one tenant. Above 1e6 events the read time grows linearly.
+
+# Measured defects. text gives the defect and the number. evidence gives a repository path.
+# Check that the path exists before you cite it.
+issues:
+  - text: The idempotency key expires after 24 h. A client that retries later writes the request twice.
+    evidence: docs/notes/_example-evidence.md
+
+# One line per cited key. Authors, year. Title. Venue. doi when one exists.
+references:
+  rfc9110: Fielding, Nottingham, Reschke 2022. HTTP Semantics. RFC 9110. doi 10.17487/RFC9110

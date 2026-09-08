@@ -1,0 +1,43 @@
+# Task document. One file per task, in backlog, next, progress or done. Eleven keys, in this order.
+# Text fields follow ASD-STE100 and use terms from dictionary.yaml. design can name code.
+
+# Task id. Matches the file stem prefix, <domain>-<number>.
+id: example-00
+# Short title.
+title: example task
+# Task ids this task waits on. Empty list when none.
+after: []
+# One sentence. Why the task exists.
+purpose: Catch in lint what the reviews find by eye.
+# Two sentences. What the task changes. What it does not change.
+scope: The task changes scripts/doc-lint.py. It changes no system document.
+
+# Code-level design of the change. Same shape as a system document part. Code names permitted.
+# cite lists keys from this file's references or from the domain system document.
+design:
+  - part: Rule ids
+    does: The lint reads each rule as a map with id and text. A repeated id in one file fails.
+    cite: [ste100]
+
+# Checkable statements. Each names a check or a number.
+acceptance:
+  - make lint passes on docs/spec, docs/refs and docs/tasks.
+
+# One instruction each, in build order.
+steps:
+  - Add the rule id check to scripts/doc-lint.py.
+  - Run make lint.
+
+# Constraints and assumptions.
+limits:
+  - The lint counts words. It does not check grammar.
+
+# Filled during execution. text states the outcome. evidence gives a repository path
+# when the text has a number.
+results:
+  - text: The lint reports 3 findings on docs/spec/_example.yaml.
+    evidence: docs/notes/_example-evidence.md
+
+# One line per cited key the domain system document lacks. Authors, year. Title. Venue.
+references:
+  ste100: ASD-STE100. 2021. Simplified Technical English. Issue 8. AeroSpace and Defence Industries Association of Europe

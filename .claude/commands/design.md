@@ -48,7 +48,3 @@ Winning shape. Smallest viable slice. Why this is the form.
 ### 10. Stop
 
 No code. No edits. Wait for greenlight.
-
----
-
-FULL CAVEMAN MODE ACTIVE.

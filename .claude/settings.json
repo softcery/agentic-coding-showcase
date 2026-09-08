@@ -75,7 +75,7 @@
       "NotebookEdit"
     ]
   },
-  "outputStyle": "Caveman",
+  "outputStyle": "Plain",
   "enableArtifact": false,
   "disableClaudeAiConnectors": true,
   "disableWorkflows": true

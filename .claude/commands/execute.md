@@ -50,8 +50,5 @@ Clean it up.
 Files changed (path + intent).
 Symbols added / removed.
 Plan bullets landed vs blocked.
+Write each outcome into the task `results`. Give each number an evidence path.
 Self-evaluation.
-
----
-
-FULL CAVEMAN MODE ACTIVE.

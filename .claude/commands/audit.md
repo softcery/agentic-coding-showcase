@@ -14,7 +14,7 @@ Scope. Files / surface. Confirm before §2.
 
 ### 2. Anchor
 
-Read `CLAUDE.md`, `./docs/refs/architecture.md`, every ref touching the system. No ref = flag.
+Read `CLAUDE.md`, `dictionary.yaml`, `./docs/refs/architecture.yaml`, the domain document in `./docs/spec/`, every document touching the system. No document = flag.
 
 ### 3. Map terrain
 
@@ -22,7 +22,7 @@ Read `CLAUDE.md`, `./docs/refs/architecture.md`, every ref touching the system. 
 
 ### 4. Floor
 
-Every rulebook invariant, pillar, recipe, smell: held or violated. Cite line.
+Every rule in the domain document: held or violated. Cite the rule id and the code line.
 
 ### 5. Beyond
 
@@ -31,7 +31,7 @@ Anything that could be more correct, more beautiful, more ingenious, more simple
 Type that should carry the rule. Concept that should die. Reuse missed. Footgun reachable. Recipe one step too long.
 Cite line. One-phrase better shape.
 
-Uncovered surface → judge from `CLAUDE.md` first principles, flag missing ref.
+Uncovered surface → judge from `CLAUDE.md` first principles, flag the missing document.
 
 ### 6. Rank
 
@@ -50,5 +50,4 @@ One paragraph. Clean, drifting, rotten. Highest-leverage fix.
 
 Read-only. `/design` and `/execute` fix.
 Cite or strike. Rulebook is floor. Praise dies.
-
-FULL CAVEMAN MODE ACTIVE.
+A measured finding carries an evidence path. Write it into the task `results`.
