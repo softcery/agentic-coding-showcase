@@ -1,56 +1,16 @@
 ---
-description: Distill a system into a YAML document under ./docs/refs/ or ./docs/spec/. Design and rules only. No code dumps, no plan refs, no obvious stuff.
+description: Write the YAML document of a system in docs/spec. Design, rules and limits only.
 ---
 
-Write the document for the system: $ARGUMENTS. One YAML file that locks the design, the rules and the limits. A document is a fence, not a tour. You're the ingenious software architect with IQ of 180.
+Write the document of the system: $ARGUMENTS. One YAML file that states the design, the rules and the limits. Write only what prevents a mistake.
 
----
-
-## Protocol
-
-### 1. Restate
-
-Restate the system and its boundary. In / out. Confirm before §2.
-
-### 2. Review documents
-
-Read `./docs/refs/documentation.yaml`, `dictionary.yaml`, `./docs/spec/_example-api.yaml`, every overlapping document. No duplication. No contradiction. Extend an existing document or carve a fresh one. State the choice.
-
-### 3. Map terrain
-
-Map the system. Read load-bearing files only. Note: boundary, public surface, event and effect shape, who reads, who writes, who folds.
-
-### 4. Distill design
-
-One part per stage, in data flow order. Each `does` states what the part calculates and names its method. Signature level, not body level. Name concepts, not code symbols.
-
-### 5. Distill rules
-
-Each rule = one property held by types or one chokepoint. Give it an id, `R1` upward. "By convention" → move it to `limits`. A rule must answer: what breaks on violation.
-
-### 6. Limits and issues
-
-`limits` = cases the target system does not handle. `issues` = gaps between this design and the code. A number in an issue carries an `evidence` path. Check the path exists.
-
-### 7. Cut
-
-Kill: obvious-from-code, function-body restatement, plan and date and status refs, empty adjectives, examples that pin no rule. If the line prevents no mistake, cut it.
-
-### 8. Write
-
-`./docs/spec/<domain>.yaml` for one system, product or technical. `./docs/refs/<name>.yaml` for an overarching document that spans domains. Eight keys in order. `domain` matches the file stem. Every text field follows the CLAUDE.md style block and `dictionary.yaml`.
-
-### 9. Check
-
-Run `make lint`. Fix every finding. Never widen a sentence past the word limit.
-
-### 10. Receipt
-
-Document path. Parts, rules, limits, issues counted. Terms the dictionary lacks, proposed to the operator. Violations found in code, listed as follow-up tasks, not fixed here.
-
----
-
-Fence not tour.
-If it prevents no mistake, cut.
-No plan refs, no dates, no statuses.
-Unmeasured claim never lands in a document.
+1. State the system and its boundary: what is in and what is out. Get the user's confirmation.
+2. Read `docs/spec/documentation.yaml`, `docs/spec/_example-api.yaml` and each document that overlaps. Extend a document or start a new one, and say which. Do not repeat or contradict a document.
+3. Read the main files. Find the boundary, the public surface, the data shapes, and who reads and who writes.
+4. design: one part per stage, in data flow order. Each `does` states what the part calculates and its method. Name concepts, not code symbols.
+5. rules: each rule is one property that a type or one chokepoint holds. Each rule states what breaks if code does not keep it. Put a convention in `limits`.
+6. limits: the cases the system does not handle. issues: the gaps between the design and the code.
+7. Remove what the code shows clearly, plans, dates, statuses, empty adjectives and examples that pin no rule.
+8. Write `docs/spec/<domain>.yaml`, with the eight keys in order. `domain` is the file stem.
+9. Run `make lint` and fix each finding.
+10. Report the path and the count of parts, rules, limits and issues. List each code violation as a follow-up task. Do not fix it here.

@@ -17,14 +17,10 @@ design:
     does: A change to a locked period compares against the snapshot. Each flag names the booking, the delta and the basis it breaks.
 
 rules:
-  - id: R1
-    text: A return carries the booked basis and the departed basis together.
-  - id: R2
-    text: Cadence derives from the licence type and the turnover. The holder does not select it.
-  - id: R3
-    text: A locked snapshot is immutable. A correction supersedes it and keeps the old one.
-  - id: R4
-    text: The system prepares the figures. A person files them.
+  - A return carries the booked basis and the departed basis together.
+  - Cadence derives from the licence type and the turnover. The holder does not select it.
+  - A locked snapshot is immutable. A correction supersedes it and keeps the old one.
+  - The system prepares the figures. A person files them.
 
 limits:
   - The authority has no submission interface. A person types the figures into the portal.
@@ -32,6 +28,5 @@ limits:
 
 issues:
   - text: The forward breakdown counts an in-period departure twice. 1 of 14 test periods fails.
-    evidence: docs/notes/_example-evidence.md
 
 references: {}

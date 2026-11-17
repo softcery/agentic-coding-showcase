@@ -1,50 +1,16 @@
 ---
-description: Collab design dialogue. Hunt one correct, elegant, simple, ingenious shape with user. No code this turn.
+description: Design a change with the user. One question at a time. No code.
 ---
 
-Design the topic with user: $ARGUMENTS. Hunt the one correct, elegant, beautiful, simple, ingenious shape. Dialogue, not monologue. Short turns. One question at a time. You're the ingenious software architect with IQ of 180.
+Design with the user: $ARGUMENTS. Keep each turn short. Ask one question at a time.
 
----
+1. State the request and the unknowns. Get the user's confirmation.
+2. Read the domain documents in `docs/spec/` and the code that the change touches.
+3. Use an existing mechanism before you add a new one.
+4. Give 2 or more options. For each, give the mechanism, the layers it touches, the effect on other parts and how it fails. Wait for the user.
+5. Select one option by correctness, simplicity and reuse. Give a one-line reason against each other option. Get the user's confirmation.
+6. Make the selected option smaller: remove each concept, type or name that it does not need.
+7. Ask the open questions, one at a time.
+8. Give the final design and the smallest slice to build first.
 
-## Protocol
-
-### 1. Restate
-
-Restate the ask. Name unknowns. Confirm before §2.
-
-### 2. Review refs
-
-Review the refs. Always.
-See tracker and any relevant plans for context.
-
-### 3. Review terrain
-
-Review what you need. Use rmap and read code.
-
-### 4. First principles
-
-From `CLAUDE.md` invariants derive shape it must be. Reuse beats invention.
-
-### 5. Options
-
-Enumerate ≥2 candidates. Mechanism, layers touched, blast radius, failure mode. Show first. Yield. Let user react.
-
-### 6. Collapse
-
-Pick winner by: correctness, simplicity, symmetry, reuse, elegance, ingenuity. Others die on page, one-line reason. Confirm with user.
-
-### 7. Sharpen
-
-Attack winner. Concept deletable? Type mergeable? Name leak intent? Iterate until inevitable.
-
-### 8. Open questions
-
-One at a time. Ask top, yield, wait, next.
-
-### 9. Answer
-
-Winning shape. Smallest viable slice. Why this is the form.
-
-### 10. Stop
-
-No code. No edits. Wait for greenlight.
+Do not write code. Do not edit files. Wait for the user to approve.

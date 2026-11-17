@@ -22,6 +22,6 @@ orders tasks inside one domain.
 3. List ids this task waits on in `after`.
 4. To schedule, `git mv` into `next/` and set the number.
 5. To start, `git mv` into `progress/`.
-6. During build, edit this file only.
-7. Write each outcome into `results`. Give each number an evidence path.
-8. After review, `git mv` into `done/`.
+6. During build, edit this file and each domain document that the task changes.
+7. Write each outcome into `results`.
+8. When the task merges into main, `git mv` into `done/`.

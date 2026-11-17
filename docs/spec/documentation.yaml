@@ -1,0 +1,77 @@
+domain: documentation
+purpose: Give every reader one true, current, checkable statement per fact about the project.
+scope: The documentation system reads the code, the test output and published sources. It writes system documents and task documents.
+
+design:
+  - part: System document
+    does: One YAML file per domain. Eight keys in order, domain, purpose, scope, design, rules, limits, issues, references. _example-api.yaml is the reference.
+    cite: [iso42010, iso29148]
+  - part: Folders
+    does: >-
+      docs/spec holds one document per domain, product and technical alike. docs/spec also holds the rationale of a domain, as <domain>.rationale.yaml. The architecture and the documentation rules are domains too.
+      docs/issues holds free markdown, with one kind for each file suffix. .rfc.md for a proposal, .audit.md for the findings of an audit, .issue.md for one problem.
+  - part: Domain name
+    does: One domain name is declared once in docs/spec. The domain matches the file stem. A task id starts with the domain of the document it cites.
+  - part: Purpose and scope
+    does: Purpose is one sentence and states the outcome the system exists to produce. Scope is two sentences and states what the system reads and writes.
+    cite: [iso29148]
+  - part: Design
+    does: A list of parts in data flow order. Each part has part, does and optional cite. The does field states what the part calculates and names its method.
+    cite: [iso42010]
+  - part: Rules
+    does: Each rule is one sentence or more of text, with no id. Another document states the rule in its own words.
+  - part: Limits and issues
+    does: Limits are cases the target system does not handle. Issues are gaps between design and code, also a part that is not built.
+    cite: [iso29148]
+  - part: Rationale
+    does: >-
+      A rationale document has the keys domain, idea, invariants, decisions, tests, prior_art and risks, in this order. Only domain, idea and decisions are required.
+      The idea states the approach of the domain in one paragraph. Each invariant is one or more sentences, with no id, and each decision keeps it.
+      Each decision has decision, chosen and rejected, and optional sources. Each rejected option has option and reason, and names a broken invariant in words.
+      A test has test, found and optional sources. A prior art has product, confirms, and optional warns and sources. A risk has risk and effect.
+      The rationale states the current decisions only. A new choice replaces the old decision in place.
+  - part: Task document
+    does: One YAML file per task under docs/tasks. Eleven keys in order, id, title, after, purpose, scope, design, acceptance, steps, limits, results, references.
+    cite: [iso29148, iso15289]
+  - part: References
+    does: A map from citation key to one line, authors, year, title, venue, DOI. Each cite key resolves in references. Each reference is cited.
+  - part: Language
+    does: ASD-STE100 and ISO 24495-1 apply to every text field and all prose. Procedural sentences stay under 20 words, descriptive under 25.
+    cite: [ste100, iso24495]
+  - part: Checks
+    does: >-
+      make lint runs scripts/doc-lint.py on docs/spec and on the tasks.
+      The script checks the schema, the key order, the sentence length, the banned words and the citation keys. It checks the keys of each rationale document.
+
+rules:
+  - Write system documents in YAML 1.2. Do not write them in markdown.
+  - Do not name code symbols in a system document. Name concepts.
+  - Do not give a rule an id. Do not cite a rule by number.
+  - Do not write a measurement that no issue or limit uses.
+  - Do not write history, closed issues, old values, before-after text or dates.
+  - Write the target design. Record an unbuilt part as an issue.
+  - Give each reference authors, year, title and venue.
+  - Write each acceptance entry as a checkable statement with a number or a named check.
+  - Do not close a task with an acceptance that does not hold. Record it as an issue of the domain or as a new task.
+  - A task cite resolves in the task references or in the domain document.
+  - During a task, edit the task file and each domain document that the task changes. Do not edit another document.
+  - Give each sentence a verb. Use the active voice and the present tense.
+  - Write a prohibition as do not plus verb.
+  - Name the actor. Do not write that the code wants.
+  - Do not write metaphor. Use one term per concept.
+  - Do not write a check that each task runs, such as make lint, as an acceptance entry or a step.
+
+limits:
+  - The ASD-STE100 approved word list is not in the repository. Vocabulary checks run by eye until it is.
+  - The lint counts sentence words. It does not check grammar, voice or tense.
+  - docs/issues holds free markdown. No schema check runs on it.
+  - A scaffold file, prefix _, holds illustrative content. The adopter deletes it.
+
+issues: []
+
+references:
+  iso42010: ISO/IEC/IEEE 42010:2022. Software, systems and enterprise. Architecture description
+  iso29148: ISO/IEC/IEEE 29148:2018. Systems and software engineering. Life cycle processes. Requirements engineering
+  iso15289: ISO/IEC/IEEE 15289:2019. Systems and software engineering. Content of life-cycle information items
+  iso24495: ISO 24495-1:2023. Plain language. Part 1, Governing principles and guidelines
+  ste100: ASD-STE100. Simplified Technical English. Issue 8, 2021
