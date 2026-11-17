@@ -1,53 +1,14 @@
 ---
-description: Audit a system on all fronts. Catch everything that could be more correct, beautiful, ingenious, simple. Verdict only. No edits.
+description: Audit a system. Find what can be more correct or simpler. Report only, no edits.
 ---
 
-Audit the system: $ARGUMENTS. Hunt every place it could be more correct, beautiful, ingenious, simple — every friction that makes future work harder. Rulebook is floor, not ceiling. Read-only. You're the ingenious software architect with IQ of 180.
+Audit the system: $ARGUMENTS. Do not edit code. `/design` and `/execute` make the fixes.
 
----
-
-## Protocol
-
-### 1. Restate
-
-Scope. Files / surface. Confirm before §2.
-
-### 2. Anchor
-
-Read `CLAUDE.md`, `dictionary.yaml`, `./docs/refs/`, the domain document in `./docs/spec/`, every document touching the system. No document = flag.
-
-### 3. Map terrain
-
-`rmap`. Read load-bearing files end-to-end.
-
-### 4. Floor
-
-Every rule in the domain document: held or violated. Cite the rule id and the code line.
-
-### 5. Beyond
-
-Hunt past the rulebook.
-Anything that could be more correct, more beautiful, more ingenious, more simple, or easier to live with.
-Type that should carry the rule. Concept that should die. Reuse missed. Footgun reachable. Recipe one step too long.
-Cite line. One-phrase better shape.
-
-Uncovered surface → judge from `CLAUDE.md` first principles, flag the missing document.
-
-### 6. Rank
-
-- 🔴 Bug / divergence.
-- 🟠 Architecture violation.
-- 🟡 Smell / friction.
-- 🟢 Note.
-
-`path:line — finding. fix.`
-
-### 7. Verdict
-
-One paragraph. Clean, drifting, rotten. Highest-leverage fix.
-
----
-
-Read-only. `/design` and `/execute` fix.
-Cite or strike. Rulebook is floor. Praise dies.
-A measured finding carries an evidence path. Write it into the task `results`.
+1. State the scope: the files and the surface. Get the user's confirmation.
+2. Read `CLAUDE.md`, `docs/spec/architecture.yaml` and each domain document of the system. If the system has no document, record a finding.
+3. Read the main files of the system from start to end.
+4. For each rule in the domain document, state if the code keeps it. Quote the rule and give the code line.
+5. Find what the rules do not cover: bugs, missed reuse, concepts to remove, rules that a type can hold, unsafe paths, extra steps.
+6. Write each finding as `path:line: finding. fix.` Sort by severity: bug, architecture, friction, note.
+7. Give the verdict in one paragraph: the state of the system and the fix with the most effect.
+8. If a task file is in scope, write each finding into its `results`.

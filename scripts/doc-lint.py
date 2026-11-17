@@ -1,5 +1,5 @@
 #!/usr/bin/env -S uv run --with pyyaml python
-"""Lint system documents, task documents and the dictionary. Exit 1 on any finding."""
+"""Lint system documents and task documents. Exit 1 on any finding."""
 
 from __future__ import annotations
 
@@ -9,7 +9,8 @@ from pathlib import Path
 
 import yaml
 
-DOC_DIRS = ("docs/spec", "docs/refs")
+SPEC_DIR = "docs/spec"
+DOC_DIRS = (SPEC_DIR,)
 TASK_DIR = "docs/tasks"
 KEYS = ["domain", "purpose", "scope", "design", "rules", "limits", "issues", "references"]
 TASK_KEYS = [
@@ -26,15 +27,20 @@ TASK_KEYS = [
     "references",
 ]
 PART_KEYS = {"part", "does", "cite"}
-RULE_KEYS = {"id", "text"}
+RATIONALE_KEYS = ["domain", "idea", "invariants", "decisions", "tests", "prior_art", "risks"]
+RATIONALE_REQUIRED = {"domain", "idea", "decisions"}
+# Required and optional keys of each item of a rationale list.
+RATIONALE_ITEMS = {
+    "decisions": ({"decision", "chosen", "rejected"}, {"sources"}),
+    "tests": ({"test", "found"}, {"sources"}),
+    "prior_art": ({"product", "confirms"}, {"warns", "sources"}),
+    "risks": ({"risk", "effect"}, set()),
+}
+REJECTED_KEYS = {"option", "reason"}
 FINDING_KEYS = {"text", "evidence"}
 PROCEDURAL_MAX = 20
 DESCRIPTIVE_MAX = 25
-# evidence path shape. set it to the project's own, for example records/<hash>/<run>
-EVIDENCE = re.compile(r"^[\w.][\w./-]*$")
 BANNED = re.compile(r"\b(should|would|may|might|could|e\.g\.|i\.e\.|etc\.?)\b", re.I)
-RULE_ID = re.compile(r"^[A-Z]+\d+$")
-NUMBER = re.compile(r"\d")
 SENTENCE = re.compile(r"(?<=[.!?])\s+")
 YEAR = re.compile(r"\b(19|20)\d\d\b")
 
@@ -42,17 +48,18 @@ YEAR = re.compile(r"\b(19|20)\d\d\b")
 def main() -> None:
     root = Path.cwd()
     findings: list[str] = []
-    lint_dictionary(root / "dictionary.yaml", findings)
-    domains: dict[str, Path] = {}
     for name in DOC_DIRS:
         folder = root / name
         if not folder.is_dir():
             findings.append(f"{folder}: document folder is absent, expected a directory")
             continue
+        domains: dict[str, Path] = {}
         for path in sorted(folder.iterdir()):
             if path.name.startswith("."):
                 continue
-            if path.suffix == ".yaml":
+            if path.name.endswith(".rationale.yaml"):
+                lint_rationale(path, findings)
+            elif path.suffix == ".yaml":
                 document = lint_document(path, findings)
                 check_domain(path, (document or {}).get("domain"), domains, findings)
             else:
@@ -63,27 +70,6 @@ def main() -> None:
         print(line)
     print(f"{len(findings)} findings")
     sys.exit(1 if findings else 0)
-
-
-def lint_dictionary(path: Path, out: list[str]) -> None:
-    data = load(path, out)
-    if not data:
-        return
-    sources = data.get("sources", {})
-    seen_project = False
-    for term, entry in data.get("terms", {}).items():
-        where = f"{path}: {term}"
-        if set(entry) != {"def", "src"}:
-            out.append(f"{where}: keys must be def, src")
-            continue
-        key = entry["src"].split()[0]
-        if key not in sources:
-            out.append(f"{where}: src {key} not in sources")
-        if key == "project":
-            seen_project = True
-        elif seen_project:
-            out.append(f"{where}: sourced term after a project term")
-        check_text(where, entry["def"], DESCRIPTIVE_MAX, out, stop=False)
 
 
 def lint_document(path: Path, out: list[str]) -> dict | None:
@@ -108,6 +94,29 @@ def lint_document(path: Path, out: list[str]) -> dict | None:
     for key in sorted(refs - cited):
         out.append(f"{path}: reference {key} not cited")
     return data
+
+
+def lint_rationale(path: Path, out: list[str]) -> None:
+    data = load(path, out)
+    if not data:
+        return
+    keys = list(data)
+    if keys != [key for key in RATIONALE_KEYS if key in data] or not RATIONALE_REQUIRED <= set(keys) or not set(keys) <= set(RATIONALE_KEYS):
+        out.append(f"{path}: keys must be {', '.join(RATIONALE_KEYS)} in order, with domain, idea and decisions")
+        return
+    if data["domain"] != path.name.removesuffix(".rationale.yaml"):
+        out.append(f"{path}: domain must equal file stem")
+    for i, invariant in enumerate(data.get("invariants", [])):
+        if not isinstance(invariant, str):
+            out.append(f"{path}: invariants[{i}]: invariant must be a sentence, with no id")
+    for key, (required, optional) in RATIONALE_ITEMS.items():
+        for i, item in enumerate(data.get(key, [])):
+            if not isinstance(item, dict) or not required <= set(item) <= required | optional:
+                out.append(f"{path}: {key}[{i}]: keys must be {', '.join(sorted(required))}, optional {', '.join(sorted(optional)) or 'none'}")
+            elif key == "decisions":
+                for j, option in enumerate(item["rejected"]):
+                    if not isinstance(option, dict) or set(option) != REJECTED_KEYS:
+                        out.append(f"{path}: decisions[{i}].rejected[{j}]: keys must be option, reason")
 
 
 def lint_task(path: Path, out: list[str]) -> None:
@@ -152,19 +161,12 @@ def check_design(path: Path, data: dict, out: list[str]) -> set[str]:
 
 
 def check_rules(path: Path, data: dict, out: list[str]) -> None:
-    seen: set[str] = set()
     for i, rule in enumerate(data["rules"]):
         where = f"{path}: rules[{i}]"
-        if not isinstance(rule, dict) or set(rule) != RULE_KEYS:
-            out.append(f"{where}: keys must be id, text")
+        if not isinstance(rule, str):
+            out.append(f"{where}: rule must be a string")
             continue
-        rule_id = str(rule["id"])
-        if not RULE_ID.match(rule_id):
-            out.append(f"{where}: id must match letters then digits, for example R1")
-        if rule_id in seen:
-            out.append(f"{where}: id {rule_id} is not unique in the file")
-        seen.add(rule_id)
-        check_text(f"{where} {rule_id}", rule["text"], PROCEDURAL_MAX, out)
+        check_text(where, rule, PROCEDURAL_MAX, out)
 
 
 def check_findings(path: Path, key: str, entries: list, out: list[str]) -> None:
@@ -174,11 +176,6 @@ def check_findings(path: Path, key: str, entries: list, out: list[str]) -> None:
             out.append(f"{where}: keys must be text, optional evidence")
             continue
         check_text(where, entry["text"], DESCRIPTIVE_MAX, out)
-        evidence = entry.get("evidence")
-        if evidence is None and NUMBER.search(entry["text"]):
-            out.append(f"{where}: text has a number, evidence required")
-        if evidence is not None and not EVIDENCE.match(str(evidence)):
-            out.append(f"{where}: evidence must be a repository path")
 
 
 def check_references(path: Path, refs: dict | None, out: list[str]) -> set[str]:
@@ -206,16 +203,15 @@ def domain_document(path: Path, task_id: str) -> Path:
     root = next((p.parent for p in path.parents if p.name == "docs"), path.parent)
     matches = [
         candidate
-        for name in DOC_DIRS
-        for candidate in (root / name).glob("*.yaml")
+        for candidate in (root / SPEC_DIR).glob("*.yaml")
         if task_id == candidate.stem or task_id.startswith(candidate.stem + "-")
     ]
-    default = root / DOC_DIRS[0] / f"{task_id.split('-')[0]}.yaml"
+    default = root / SPEC_DIR / f"{task_id.split('-')[0]}.yaml"
     return max(matches, key=lambda p: len(p.stem), default=default)
 
 
 def check_text(
-    where: str, text: object, limit: int, out: list[str], sentences: int | None = None, stop: bool = True
+    where: str, text: object, limit: int, out: list[str], sentences: int | None = None
 ) -> None:
     if not isinstance(text, str) or not text.strip():
         out.append(f"{where}: text must be a non-empty string")
@@ -227,15 +223,25 @@ def check_text(
         words = len(sentence.split())
         if words > limit:
             out.append(f"{where}: {words} words, limit {limit}: {sentence[:60]}")
-        if stop and not sentence.rstrip().endswith("."):
+        if not sentence.rstrip().endswith("."):
             out.append(f"{where}: sentence must end with a full stop: {sentence[:60]}")
     for match in BANNED.finditer(text):
         out.append(f"{where}: banned word {match.group(0)}")
 
 
+class UniqueKeyLoader(yaml.SafeLoader):
+    """Refuses a repeated key in a map, which PyYAML takes as the last value."""
+
+    def construct_mapping(self, node: yaml.MappingNode, deep: bool = False) -> dict:
+        keys = [self.construct_object(key, deep=deep) for key, _ in node.value]
+        for key in {key for key in keys if keys.count(key) > 1}:
+            raise yaml.constructor.ConstructorError(None, None, f"repeated key {key}", node.start_mark)
+        return super().construct_mapping(node, deep)
+
+
 def load(path: Path, out: list[str]) -> dict | None:
     try:
-        data = yaml.safe_load(path.read_text())
+        data = yaml.load(path.read_text(), Loader=UniqueKeyLoader)
     except yaml.YAMLError as err:
         out.append(f"{path}: yaml error: {err}")
         return None

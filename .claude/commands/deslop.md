@@ -1,46 +1,20 @@
 ---
-description: Remove slop from docs. Style only. Facts, numbers, sources untouched.
+description: Remove slop from docs. Style only. Facts, numbers and sources stay.
 ---
 
-Deslop: $ARGUMENTS. Default scope: all docs in project at hand. Style only. No fact changes, no content deletion, no judgements, no verification.
+Remove slop from: $ARGUMENTS. If no scope is given, use all the docs of the project. Change the style only. Do not change, remove or check facts.
 
----
+1. State the files in scope. Get the user's confirmation.
+2. Rewrite each doc from start to end, to the style block of `CLAUDE.md`.
+   - Remove drama, opinion, metaphor, story, hedging, filler and comments on the text itself.
+   - Remove AI patterns: "not X, it is Y", adverbs, code that "wants", "every" or "always" with no number, short punchy closing lines.
+   - Keep facts, numbers, units, sources, code, commands and paths exactly. Do not add a number or a detail that the source does not give.
+   - Keep the same facts in about half the characters.
+   - If the structure tells a story, restructure it as a list of facts.
+   - Do not swap a word for a synonym to pass a check.
+   - In a YAML document, keep the keys and their order. Rewrite only the text.
+3. Give the characters before and after for each file. Add no comment.
 
-## Protocol
-
-### 1. Restate
-
-Scope. Files. Confirm before §2.
-
-### 2. Rewrite
-
-Every doc, end-to-end.
-
-Kill: dramatics, editorials, poetics, metaphor, narrative, verdict-voice, meta-commentary, hedging, filler, throat-clearing, "which is why", "that is the whole reason", clever phrasing. Drop articles. Fragments OK.
-
-Kill AI tells: "not X, it's Y" contrasts, adverbs, false agency ("the code wants"), lazy extremes (every/always/never without number), vague declaratives, punchy closers, pull-quotes.
-
-Keep exact: facts, numbers, units, sources, code blocks, commands, paths. Source gives no number, cause, or exact term = keep general statement. Invent no specifics to look concrete.
-
-Apply grammar rules from CLAUDE.md style block: simple tenses, modals can/will/must, condition before command, one term per concept.
-
-Before: "The half second is real and it is silent, which is the part a listener judges. So the agent speaks a held line the moment the call goes out, and the search runs under it."
-After: "0.5s silence during search. Held line fires at tool call, search runs under it."
-
-Same fact count. Target: half chars. Reads well = rewrite it. Unsure fact or flourish → keep fact, cut rest.
-
-Never cheat the scanner: synonym-swap = same slop, new fingerprint.
-
-Slop lives in structure, not sentences. Short sentences in story order = still story. Extract facts, state them. Restructure when shape is the slop.
-
-BE RUTHLESS! Kill all bullshit, all romantics, all poetics, all the fucking riddle-speak. Limit language to <= B2 level.
-
-A YAML document keeps its schema. Rewrite the text of a field, never its key or order.
-
-### 3. Verdict
-
-Chars before/after per file. No commentary.
-
----
-
-Not `/audit`. No findings, no opinions on content. Text only.
+Example:
+- Before: "The half second is real and it is silent, which is the part a listener judges. So the agent speaks a held line the moment the call goes out, and the search runs under it."
+- After: "The search has 0.5 s of silence. The agent speaks a held line at the tool call, and the search runs under it."

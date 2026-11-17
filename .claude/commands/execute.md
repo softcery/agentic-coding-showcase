@@ -1,54 +1,13 @@
 ---
-description: Consume existing plan. Execute fully or as instructed. No deferrals without authorisation.
+description: Execute a plan in full. Defer nothing without the user's approval.
 ---
 
-Execute the plan as instructed: $ARGUMENTS. Make it extremely clean and beautiful. No compromises, no slacking, no laziness, no stupidity, no delegation, no deferring. You're the ingenious software engineer with IQ of 180.
+Execute the plan: $ARGUMENTS. Execute all of it. Do not delegate. Do not defer a part unless the user agrees before you start.
 
----
-
-## Protocol
-
-### 1. Ingest plan
-
-Review the plan. Understand it.
-
-See tracker and any relevant plans for context.
-
-### 2. Review refs
-
-Review the refs. Always.
-
-### 3. Review terrain
-
-Review what you need. Use rmap and read code.
-Do it quickly. Parallelize.
-
-### 4. Greenlight
-
-Plan ambiguous, blocked, or impossible as written → stop, surface, ask. One question. Yield.
-
-If green light, plan execution steps via TaskCreate/TaskList/TaskGet/TaskUpdate/TaskOutput/TaskStop.
-
-### 5. Execute
-
-Execute the plan.
-Do not waste cycles on stability mid-iteration.
-Execute in full.
-Deferrals are strictly prohibited unless discussed up-front before execution.
-Push through.
-
-### 6. Review
-
-Check. Lint. Fix.
-Think through every change.
-Evaluate cleanliness, beauty, adherence to refs
-Catch any bugs, smells, weirdness, dirtiness.
-Clean it up.
-
-### 7. Receipt
-
-Files changed (path + intent).
-Symbols added / removed.
-Plan bullets landed vs blocked.
-Write each outcome into the task `results`. Give each number an evidence path.
-Self-evaluation.
+1. Read the plan and the domain documents in `docs/spec/`.
+2. Read the code that the plan touches.
+3. If the plan is unclear, blocked or impossible, stop and ask one question.
+4. Make a list of steps with the task tools.
+5. Do the steps.
+6. Read each change again. Run `make lint` and the tests. Fix bugs, code smells and departures from the docs.
+7. Report the changed files and why, the plan items that are done or blocked, and the open checks. Write each outcome into the task `results`.
